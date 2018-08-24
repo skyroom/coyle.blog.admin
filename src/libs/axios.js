@@ -42,7 +42,7 @@ class httpRequest {
 
         // 添加响应拦截器
         instance.interceptors.response.use((res) => {
-            console.log('拦截器里面的res', res);
+            // console.log('拦截器里面的res', res);
             const { data } = res;
             // const is = this.destroy(url)
             // if (!is) {
@@ -60,7 +60,7 @@ class httpRequest {
             }
             if (data.code == 401) {
                 Notice.error({ title: '请登录' });
-                console.log('router is', router);
+                // console.log('router is', router);
                 store.dispatch('clearToken');
                 router.push({
                     name: 'login'
@@ -90,7 +90,7 @@ class httpRequest {
             // }
             // return data
         }, (error) => {
-            console.log('error', error);
+            // console.log('error', error);
             Promise.reject(error);
             Notice.error({ title: error });
         })

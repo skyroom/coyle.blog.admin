@@ -39,17 +39,10 @@ export default {
                 password
             }).then(res => {
                 console.log('登录成功之后', res);
-                // this.getUserInfo().then(res => {
-                //     this.$router.push({
-                //         name: 'home'
-                //     })
-                // })
+                this.$router.push({
+                    name: 'home'
+                })
             })
-            // this.getTestDataHandle({
-            //     username,
-            //     password
-            // }).then(res => {
-            // })
         }
     }
 }

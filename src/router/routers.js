@@ -69,18 +69,21 @@ export default[
         ]
     },
     {
-        path: '/mytest',
-        name: '测试页面',
+        path: '/article',
+        name: 'article',
         component: Main,
+        meta: {
+            hide: true
+        },
         children: [
             {
-                path: 't_page/:id',
+                path: 'list',
                 name: 'test',
                 meta: {
                     icon: 'md-flower',
-                    title: '我的测试页面'
+                    title: '文章列表'
                 },
-                component: () => import ('@/view/my-test-page/my-test-params.vue')
+                component: () => import ('@/view/articles/articles-list.vue')
             }
         ]
     },
