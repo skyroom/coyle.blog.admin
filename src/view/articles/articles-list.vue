@@ -1,6 +1,7 @@
 <template>
 <div>
-    <Table border :columns="columns" :data="tableData"></Table>
+    <Button class="add-button" type="info" @click="addArticleHandle">添加文章</Button>
+    <Table border :columns="columns" :data="articleList" :loading="loading"></Table>
 </div>
 </template>
 
@@ -11,96 +12,105 @@ import {
 } from 'vuex';
 
 const columns = [{
-            title: 'Name',
-            key: 'name',
-            render: (h, params) => {
-                return h('div', [
-                    h('Icon', {
-                        props: {
-                            type: 'person'
+        title: '文章标题',
+        key: 'title',
+    },
+    {
+        title: '文章简介',
+        key: 'short'
+    },
+    {
+        title: 'Action',
+        key: 'action',
+        width: 150,
+        align: 'center',
+        render: (h, params) => {
+            console.log('this is ', this);
+            return h('div', [
+                h('Button', {
+                    props: {
+                        type: 'primary',
+                        size: 'small'
+                    },
+                    style: {
+                        marginRight: '5px'
+                    },
+                    on: {
+                        click: () => {
+                            this.show(params.index)
                         }
-                    }),
-                    h('strong', params.row.name)
-                ]);
-            }
-        },
-        {
-            title: 'Age',
-            key: 'age'
-        },
-        {
-            title: 'Address',
-            key: 'address'
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            width: 150,
-            align: 'center',
-            render: (h, params) => {
-                return h('div', [
-                    h('Button', {
-                        props: {
-                            type: 'primary',
-                            size: 'small'
-                        },
-                        style: {
-                            marginRight: '5px'
-                        },
-                        on: {
-                            click: () => {
-                                this.show(params.index)
-                            }
+                    }
+                }, '编辑'),
+                h('Button', {
+                    props: {
+                        type: 'error',
+                        size: 'small'
+                    },
+                    on: {
+                        click: () => {
+                            this.remove(params)
                         }
-                    }, 'View'),
-                    h('Button', {
-                        props: {
-                            type: 'error',
-                            size: 'small'
-                        },
-                        on: {
-                            click: () => {
-                                this.remove(params.index)
-                            }
-                        }
-                    }, 'Delete')
-                ]);
-            }
+                    }
+                }, '删除')
+            ]);
         }
-    ];
-
-    const tableData = [{
-            name: 'John Brown',
-            age: 18,
-            address: 'New York No. 1 Lake Park'
-        },
-        {
-            name: 'Jim Green',
-            age: 24,
-            address: 'London No. 1 Lake Park'
-        },
-        {
-            name: 'Joe Black',
-            age: 30,
-            address: 'Sydney No. 1 Lake Park'
-        },
-        {
-            name: 'Jon Snow',
-            age: 26,
-            address: 'Ottawa No. 2 Lake Park'
-        }
-    ]
+    }
+];
 
 export default {
     name: 'articlesList',
     data() {
         return {
-            columns,
-            tableData,
+            loading: true,
+            columns: [{
+                    title: '文章标题',
+                    key: 'title',
+                },
+                {
+                    title: '文章简介',
+                    key: 'short'
+                },
+                {
+                    title: 'Action',
+                    key: 'action',
+                    width: 150,
+                    align: 'center',
+                    render: (h, params) => {
+                        console.log('this is ', this);
+                        return h('div', [
+                            h('Button', {
+                                props: {
+                                    type: 'primary',
+                                    size: 'small'
+                                },
+                                style: {
+                                    marginRight: '5px'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.show(params.index)
+                                    }
+                                }
+                            }, '编辑'),
+                            h('Button', {
+                                props: {
+                                    type: 'error',
+                                    size: 'small'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.remove(params)
+                                    }
+                                }
+                            }, '删除')
+                        ]);
+                    }
+                }
+            ],
         }
     },
     computed: {
-        tagNavList() {
+        articleList() {
             return this.$store.state.article.articleList;
         },
     },
@@ -108,13 +118,36 @@ export default {
         ...mapActions([
             'getArticleList'
         ]),
+        addArticleHandle() {
+            this.$router.push('/article/add');
+        },
+        remove() {
+            this.$Modal.confirm({
+                title: '确定要删除此篇文章吗？',
+                loading: true,
+                onOk: () => {
+                    console.log('点击确认');
+                },
+            });
+        },
+        getArticleListHandle() {
+            this.getArticleList()
+            .then(() => {
+                this.$set(this, 'loading', false);
+            })
+            .catch((err) => {
+                this.$Notice.error({ title: err.msg || err });
+            });
+        },
     },
     mounted() {
-        this.getArticleList();
+        this.getArticleListHandle();
     }
 }
 </script>
 
-<style>
-
+<style lang="less">
+.add-button {
+    margin-bottom: 20px;
+}
 </style>

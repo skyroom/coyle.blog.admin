@@ -5,6 +5,7 @@ import parentView from '@/components/parent-view'
  * iview-admin中meta除了原生参数外可配置的参数:
  * meta: {
  *  hideInMenu: (false) 设为true后在左侧菜单不会显示该页面选项
+ *  hide: (false) 设为true后在面包屑中不会显示该页面选项
  *  notCache: (false) 设为true后页面不会缓存
  *  access: (null) 可访问该页面的权限数组，当前路由设置的权限会影响子路由
  *  icon: (-) 该页面在左侧菜单、面包屑和标签导航处显示的图标，如果是自定义图标，需要在图标名称前加下划线'_'
@@ -28,7 +29,8 @@ export default[
         component: Main,
         meta: {
             hideInMenu: true,
-            notCache: true
+            notCache: true,
+            hide: true,
         },
         children: [
             {
@@ -37,7 +39,8 @@ export default[
                 meta: {
                     hideInMenu: true,
                     title: '首页',
-                    notCache: true
+                    notCache: true,
+                    hide: true,
                 },
                 component: () => import ('@/view/single-page/home')
             }
@@ -73,17 +76,26 @@ export default[
         name: 'article',
         component: Main,
         meta: {
-            hide: true
+            hide: true,
+            // hideInMenu: true
         },
         children: [
             {
                 path: 'list',
-                name: 'test',
+                name: 'article_list',
                 meta: {
-                    icon: 'md-flower',
                     title: '文章列表'
                 },
                 component: () => import ('@/view/articles/articles-list.vue')
+            },
+            {
+                path: 'add',
+                name: 'article_add',
+                meta: {
+                    title: '添加文章',
+                    hideInMenu: true,
+                },
+                component: () => import ('@/view/articles/articles-modify.vue')
             }
         ]
     },
@@ -267,7 +279,7 @@ export default[
                 path: 'level_2_2',
                 name: 'level_2_2',
                 meta: {
-                    access: ['super_admin'],
+                    // access: ['super_admin'],
                     icon: 'md-funnel',
                     showAlways: true,
                     title: '二级-2'
@@ -298,9 +310,10 @@ export default[
     {
         path : '/argu',
         name: 'argu',
-        // meta: {
-        //     hideInMenu: true
-        // },
+        meta: {
+            // hideInMenu: true
+            hide: true
+        },
         component: Main,
         children: [
             {

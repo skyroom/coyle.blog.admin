@@ -77,9 +77,9 @@ export const getBreadCrumbList = (routeMetched, homeRoute) => {
     }
     return obj
   })
-  res = res.filter(item => {
-    return !item.meta.hideInMenu
-  })
+  // res = res.filter(item => {
+  //   return !item.meta.hideInMenu
+  // })
   return [Object.assign(homeRoute, { to: homeRoute.path }), ...res]
 }
 

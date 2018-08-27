@@ -7,3 +7,11 @@ export const getArticleList = () => {
         method: 'get'
     });
 }
+
+export const addArticle = (data) => {
+    return axios({
+        url: 'blog/back/article',
+        data,
+        method: 'post'
+    });
+}
