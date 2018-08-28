@@ -1,4 +1,4 @@
-import { getArticleList, addArticle } from '@/api/article'
+import { getArticleList, addArticle, deleteArticle } from '@/api/article'
 
 export default {
     state: {
@@ -30,6 +30,19 @@ export default {
         }, params) {
             return new Promise((resolve, reject) => {
                 addArticle(params)
+                .then(data => {
+                    resolve(data);
+                }).catch(err => {
+                    reject(err)
+                })
+            })
+        },
+        // 删除文章
+        deleteArticle({
+            commit
+        }, params) {
+            return new Promise((resolve, reject) => {
+                deleteArticle(params)
                 .then(data => {
                     resolve(data);
                 }).catch(err => {
