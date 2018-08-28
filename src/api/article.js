@@ -15,3 +15,10 @@ export const addArticle = (data) => {
         method: 'post'
     });
 }
+
+export const deleteArticle = (id) => {
+    return axios({
+        url: `blog/back/article/${id}`,
+        method: 'delete'
+    });
+}
