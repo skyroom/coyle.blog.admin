@@ -96,6 +96,15 @@ export default[
                     hideInMenu: true,
                 },
                 component: () => import ('@/view/articles/articles-modify.vue')
+            },
+            {
+                path: 'edit/:id',
+                name: 'article_edit',
+                meta: {
+                    title: '编辑文章',
+                    hideInMenu: true,
+                },
+                component: () => import ('@/view/articles/articles-modify.vue')
             }
         ]
     },

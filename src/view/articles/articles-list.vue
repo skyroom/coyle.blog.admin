@@ -25,6 +25,10 @@ export default {
                     key: 'short'
                 },
                 {
+                    title: '创建时间',
+                    key: 'createdAt'
+                },
+                {
                     title: '操作',
                     key: 'action',
                     width: 150,
@@ -41,7 +45,7 @@ export default {
                                 },
                                 on: {
                                     click: () => {
-                                        this.show(params.index)
+                                        this.edit(params);
                                     }
                                 }
                             }, '编辑'),
@@ -73,7 +77,7 @@ export default {
             'deleteArticle',
         ]),
         addArticleHandle() {
-            this.$router.push('/article/add')
+            this.$router.push('/article/add');
         },
         remove(params) {
             this.$Modal.confirm({
@@ -82,15 +86,15 @@ export default {
                 onOk: () => {
                     // console.log('点击确认', params)
                     this.deleteArticle(params.row._id)
-                    .then((data) => {
-                        this.getArticleListHandle();
-                        this.$Modal.remove();
-                    })
-                    .catch((err) => {
-                        this.$Notice.error({
-                            title: err.msg || err
+                        .then((data) => {
+                            this.getArticleListHandle();
+                            this.$Modal.remove();
                         })
-                    });
+                        .catch((err) => {
+                            this.$Notice.error({
+                                title: err.msg || err
+                            });
+                        });
                 }
             })
         },
@@ -102,12 +106,15 @@ export default {
                 .catch((err) => {
                     this.$Notice.error({
                         title: err.msg || err
-                    })
+                    });
                 })
-        }
+        },
+        edit(params) {
+            this.$router.push(`/article/edit/${params.row._id}`);
+        },
     },
     mounted() {
-        this.getArticleListHandle()
+        this.getArticleListHandle();
     }
 }
 </script>

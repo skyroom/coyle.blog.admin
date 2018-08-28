@@ -23,7 +23,7 @@ import {
     mapMutations,
     mapActions
 } from 'vuex';
-import Vue from 'vue'
+import Vue from 'vue';
 import mavonEditor from 'mavon-editor';
 import 'mavon-editor/dist/css/index.css';
 
@@ -33,33 +33,34 @@ export default {
     name: 'articlesList',
     data() {
         return {
+            mode: '',
             modifyForm: {
                 title: '',
                 short: '',
                 content: '',
-                tag: '',
+                // tag: '',
+                createdAt: '',
             },
             modifyFormRule: {
-                    title: [
-                        { required: true, message: '文章标题不能为空', trigger: 'blur' }
-                    ],
-                    short: [
-                        { required: true, message: '文章简介不能为空', trigger: 'blur' }
-                    ],
-                    content: [
-                        { required: true, message: '文章内容不能为空', trigger: 'blur' }
-                    ],
-                }
+                title: [
+                    { required: true, message: '文章标题不能为空', trigger: 'blur' }
+                ],
+                short: [
+                    { required: true, message: '文章简介不能为空', trigger: 'blur' }
+                ],
+                content: [
+                    { required: true, message: '文章内容不能为空', trigger: 'blur' }
+                ],
+            },
         }
     },
     computed: {
-        tagNavList() {
-            return this.$store.state.article.articleList;
-        },
     },
     methods: {
         ...mapActions([
             'addArticle',
+            'editArticle',
+            'getArticleList',
         ]),
         handleBack() {
             this.$router.go(-1);
@@ -68,23 +69,60 @@ export default {
             console.log(this.modifyForm);
             this.$refs['modifyForm'].validate((valid) => {
                 if (valid) {
-                    this.addArticle(this.modifyForm)
-                    .then((data) => {
-                        console.log('modify中请求添加结果', data);
-                        if (data.code == 200) {
-                            this.$router.go(-1);
-                        } else {
-                            this.$Notice.error({ title: data.msg });
-                        }
-                    })
+                    if (this.mode === 'add') {
+                        this.addArticle(this.modifyForm)
+                        .then((data) => {
+                            if (data.code == 200) {
+                                this.$router.go(-1);
+                            } else {
+                                this.$Notice.error({ title: data.msg });
+                            }
+                        });
+                    } else if (this.mode === 'edit') {
+                        console.log('this.modifyForm is', this.modifyForm);
+                        this.editArticle({
+                            id: this.$route.params.id,
+                            data: this.modifyForm
+                        })
+                        .then((data) => {
+                            if (data.code == 200) {
+                                this.$router.go(-1);
+                            } else {
+                                this.$Notice.error({ title: data.msg });
+                            }
+                        });
+                    }
                 } else {
                     this.$Notice.error({ title: '您的输入有误' });
                 }
             })
 
         },
+        getArticleListHandle(data) {
+            this.getArticleList(data)
+            .then((data) => {
+                this.$set(this.modifyForm, 'title', data.data[0].title);
+                this.$set(this.modifyForm, 'short', data.data[0].short);
+                this.$set(this.modifyForm, 'content', data.data[0].content);
+                this.$set(this.modifyForm, 'createdAt', data.data[0].createdAt);
+            })
+            .catch(() => {
+                this.$Notice.error({
+                    title: err.msg || err
+                });
+            });
+        },
     },
     mounted() {
+        console.log('aaa', this.$route.params.id);
+        if (this.$route.params.id) {
+            this.$set(this, 'mode', 'edit');
+            this.getArticleListHandle({
+                id: this.$route.params.id
+            });
+        } else {
+            this.$set(this, 'mode', 'add');
+        }
     }
 }
 </script>
