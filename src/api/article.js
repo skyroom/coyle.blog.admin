@@ -10,7 +10,7 @@ export const getArticleList = (data) => {
 
 export const addArticle = (data) => {
     return axios({
-        url: 'blog/back/article',
+        url: '/blog/back/article',
         data,
         method: 'post'
     });
@@ -18,14 +18,14 @@ export const addArticle = (data) => {
 
 export const deleteArticle = (id) => {
     return axios({
-        url: `blog/back/article/${id}`,
+        url: `/blog/back/article/${id}`,
         method: 'delete'
     });
 }
 
 export const editArticle = (params) => {
     return axios({
-        url: `blog/back/article/${params.id}`,
+        url: `/blog/back/article/${params.id}`,
         method: 'put',
         data: params.data
     });
