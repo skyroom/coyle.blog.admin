@@ -22,30 +22,30 @@ export default[
         },
         component: () => import ('@/view/login/login.vue')
     },
-    // {
-    //     path : '/',
-    //     name: '_home',
-    //     redirect: '/home',
-    //     component: Main,
-    //     meta: {
-    //         hideInMenu: true,
-    //         notCache: true,
-    //         hide: true,
-    //     },
-    //     children: [
-    //         {
-    //             path: '/home',
-    //             name: 'home',
-    //             meta: {
-    //                 hideInMenu: true,
-    //                 title: '首页',
-    //                 notCache: true,
-    //                 hide: true,
-    //             },
-    //             component: () => import ('@/view/single-page/home')
-    //         }
-    //     ]
-    // },
+    {
+        path : '/',
+        name: '_home',
+        redirect: '/home',
+        component: Main,
+        meta: {
+            hideInMenu: true,
+            notCache: true,
+            hide: true,
+        },
+        children: [
+            {
+                path: '/home',
+                name: 'home',
+                meta: {
+                    hideInMenu: true,
+                    title: '首页',
+                    notCache: true,
+                    hide: true,
+                },
+                component: () => import ('@/view/single-page/home')
+            }
+        ]
+    },
     // {
     //     path : '',
     //     name: 'doc',
